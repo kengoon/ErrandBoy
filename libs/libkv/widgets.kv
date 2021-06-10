@@ -92,6 +92,7 @@
 <CarouselLayout>
     adaptive_height: True
     orientation: "vertical"
+    swipers: []
     Carousel:
         size_hint_y: None
         height: Window.height/3
@@ -99,9 +100,13 @@
         on_index:
             root.swipe_pagnitors(*args)
         Swiper:
+            id: s0
         Swiper:
+            id: s1
         Swiper:
-        Swiper
+            id: s2
+        Swiper:
+            id: s3
     RelativeLayout:
         size_hint_y:None
         height: dp(50)
@@ -111,7 +116,6 @@
             pos_hint: {"center_x": .5}
             MDIconButton:
                 on_text:
-                    print(self.text)
                     self.lbl_txt.markup = True
                     self.lbl_txt.text = icon("chevron_left")
             ItemPagination
@@ -127,12 +131,12 @@
                 current_index: 3
             MDIconButton:
                 on_text:
-                    print(self.text)
                     self.lbl_txt.markup = True
                     self.lbl_txt.text = icon("chevron_right")
 
 <TopInfo@MDBoxLayout>:
     orientation: "vertical"
+    adaptive_height: True
     MDBoxLayout:
         adaptive_height: True
         padding: dp(10)
@@ -140,8 +144,10 @@
         MDCard:
             padding: dp(5)
             radius: [dp(10)]
+            size_hint_y: None
+            height: self.minimum_height
             MDLabel:
-                text: "Errand Boy </Ọnye Ozi>"
+                text: "Errand Boy (Ọnye Ozi)"
                 font_style: "H4"
                 theme_text_color: "Custom"
                 text_color: app.theme_cls.primary_color
@@ -163,4 +169,61 @@
             pos: self.pos
             size: self.size
             radius: [dp(2)]
+
+<NavButton@Button_Item>:
+    icon_color: 1,1,1,1
+    text_color: 1,1,1,1
+    button_bg_color: app.theme_cls.primary_color
+    badge_disabled: True
+
+<Products@MDCard>:
+    orientation: "vertical"
+    radius: [dp(10)]
+    size_hint_x: None
+    width: Window.width/2.5
+    source: ""
+    MDBoxLayout:
+        adaptive_height: True
+        padding: dp(10)
+        spacing: dp(5)
+        MDLabel:
+            text:f"[color={get_hex_from_color(app.theme_cls.primary_color)}][font=Roboto]₦[/font][/color]22,000.00"
+            font_style: "H6"
+            size_hint_y: None
+            height: self.texture_size[1]
+            markup: True
+            pos_hint:{"center_y": .5}
+        MDIconButton:
+            icon: "heart"
+    AsyncImage:
+        id: image
+        source: root.source
+        anim_delay: .1
+        canvas.before:
+            StencilPush
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [root.radius[0]]
+            StencilUse
+
+        canvas.after:
+            StencilUnUse
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [root.radius[0]]
+            StencilPop
+    MDBoxLayout:
+        adaptive_height: True
+        orientation: "vertical"
+        padding: dp(10)
+        spacing: dp(5)
+        MDLabel:
+            text: "Onye Owa Shoes"
+            font_style: "H6"
+            size_hint_y: None
+            height: self.texture_size[1]
+            markup: True
+
 

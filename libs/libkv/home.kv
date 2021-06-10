@@ -1,8 +1,18 @@
 <Home>:
     name: "home"
+    on_enter:
+        home.ids._icon.markup = True
+        home.ids._icon.text = icon("home")
+        cat.ids._icon.markup = True
+        cat.ids._icon.text = icon("category")
+        settings.ids._icon.markup = True
+        settings.ids._icon.text = icon("settings")
     BoxLayout:
         orientation: "vertical"
+        TopInfo:
+            id: top_info
         MDBoxLayout:
+            id: search
             adaptive_height: True
             padding: dp(10)
             M_CardTextField:
@@ -18,23 +28,41 @@
                 md_bg_color: [1,1,1,1] if app.theme_cls.theme_style == "Light" else get_color_from_hex("1f1f1f")
                 background_color: [1,1,1,1] if app.theme_cls.theme_style == "Light" else get_color_from_hex("1f1f1f")
                 disabled_foreground_color: [0.5, 0.5, 0.5, 1.0]
+        CarouselLayout:
+            id: swipe
         RecycleView:
             id: rv
+            data: [{"source": f"{image_path}shoe.jpeg"}, {"source": f"{image_path}shoe.jpeg"}, {"source": f"{image_path}shoe.jpeg"}, {"source": f"{image_path}shoe.jpeg"}]
             effect_cls: ScrollEffect
-            key_viewclass: "viewclass"
+            viewclass: "Products"
             do_scroll_x: True
-            data:[{"viewclass": "TopInfo"}, {"viewclass": "CarouselLayout"}, {"viewclass": "CarouselLayout"}, {"viewclass": "CarouselLayout"}, {"viewclass": "CarouselLayout"}]
-            RecycleGridLayout:
+            do_scroll_y: False
+            size_hint_y: None
+            height: Window.height - (swipe.height + top_info.height + search.height + nav.height)
+            RecycleBoxLayout:
                 id: holder
                 root: root.manager
                 roots: root
-                default_size_hint: 1, None
+                default_size_hint: None, 1
                 default_size: None, None
-                size_hint_y: None
-                height: self.minimum_height
-                spacing:dp(5)
-                cols: 1
+                size_hint_x: None
+                width: self.minimum_width
+                spacing:dp(10)
+                padding: dp(20)
+                orientation: "horizontal"
                 key_size: "height"
+        AKBottomNavigation2:
+            id: nav
+            NavButton:
+                id: home
+                text: "home"
+            NavButton:
+                id: cat
+                text: "category"
+            NavButton:
+                id: settings
+                text: "settings"
+
 
 
 
