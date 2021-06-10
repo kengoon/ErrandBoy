@@ -1,0 +1,39 @@
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+#:import ScrollEffect kivy.effects.scroll.ScrollEffect
+#:import _ScrollViewHardStop kivymd.uix.swiper._ScrollViewHardStop
+#:import Window kivy.core.window.Window
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import get_hex_from_color kivy.utils.get_hex_from_color
+#:import WipeTransition kivy.uix.screenmanager.WipeTransition
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+#:import FallOutTransition kivy.uix.screenmanager.FallOutTransition
+#:import MDExpansionPanelOneLine kivymd.uix.expansionpanel.MDExpansionPanelOneLine
+#:import Factory kivy.factory.Factory
+#:import webbrowser webbrowser
+#:import icon tools.iconfonts.icon
+#:set logo "assets/images/nn7.png"
+#:set image_path "assets/images/"
+#:set font_path "assets/fonts/"
+ScreenManager:
+    transition: NoTransition()
+    Screen
+        name: "init"
+        canvas:
+            Color:
+                rgba: 1,1,1,1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Image:
+            source: logo
+            allow_stretch: True
+            keep_ratio: True
+            anim_delay: 0.02
+        AKCircularProgress:
+            id: progress_bar
+            pos_hint: {"center_x": .5, "center_y": .1}
+            size_hint: None, None
+            size: dp(100), dp(100)
+            percent_type: "percent"
+            start_deg: 240
+            end_deg: 480
