@@ -19,6 +19,19 @@
             pos: self.pos
             source: self.source
 
+<CardButton@MDCard>:
+    size_hint_y: None
+    height:dp(45)
+    text: ""
+    ripple_behavior: True
+    radius: [dp(10)]
+    MDLabel:
+        text: root.text
+        halign: "center"
+        font_style: "Button"
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+
 <Swiper@MDBoxLayout>:
     padding: dp(10)
     orientation: "vertical"
@@ -45,10 +58,27 @@
                 elevation: 10
                 radius: [dp(10)]
                 size_hint_x: None
-                width: Window.width/2.5
+                width: Window.width/2
                 pos_hint: {"center_x": .5}
-                Image:
+                AsyncImage:
+                    id: image
                     source: f"{image_path}shoes.jpg"
+                    anim_delay: .1
+                    canvas.before:
+                        StencilPush
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: root.radius
+                        StencilUse
+
+                    canvas.after:
+                        StencilUnUse
+                        RoundedRectangle:
+                            size: self.size
+                            pos: self.pos
+                            radius: root.radius
+                        StencilPop
         MDLabel:
             text: f"[font=Roboto]₦[/font]200,000.00"
             halign: "center"
@@ -60,42 +90,19 @@
     MDBoxLayout:
         adaptive_height: True
         spacing: dp(10)
-        MDCard:
-            size_hint_y: None
-            height:dp(45)
+        CardButton:
+            text: "Shop Now"
             md_bg_color: app.theme_cls.primary_color
             radius: [dp(7), dp(20), dp(7), dp(20)]
-            ripple_behavior: True
-            MDLabel:
-                text: "Shop Now"
-                halign: "center"
-                font_style: "Button"
-                theme_text_color: "Custom"
-                text_color: 1,1,1,1
-        MDCard:
-            size_hint_y: None
-            height:dp(45)
+        CardButton:
             md_bg_color: get_color_from_hex("00B8D4")
             radius: [dp(7), dp(20), dp(7), dp(20)]
-            ripple_behavior: True
-            MDLabel:
-                text: "Add To Cart"
-                halign: "center"
-                font_style: "Button"
-                theme_text_color: "Custom"
-                text_color: 1,1,1,1
-        MDCard:
-            size_hint_y: None
-            height:dp(45)
+            text: "Add To Cart"
+
+        CardButton:
             md_bg_color: get_color_from_hex("6200EA")
             radius: [dp(7), dp(20), dp(7), dp(20)]
-            ripple_behavior: True
-            MDLabel:
-                text: "View Product"
-                halign: "center"
-                font_style: "Button"
-                theme_text_color: "Custom"
-                text_color: 1,1,1,1
+            text: "View Product"
 
 <CarouselLayout>
     adaptive_height: True
@@ -103,7 +110,7 @@
     swipers: []
     Carousel:
         size_hint_y: None
-        height: Window.height/2.5
+        height: Window.height/2.3
         pagnitors:[_0, _1, _2, _3]
         on_index:
             root.swipe_pagnitors(*args)
@@ -185,61 +192,78 @@
     button_bg_color: app.theme_cls.primary_color
     badge_disabled: True
 
+<BoxButton@ButtonBehavior+MDBoxLayout>
+
 <Products@MDCard>:
     orientation: "vertical"
     radius: [dp(10)]
     size_hint_x: None
     width: Window.width/2.5
     source: ""
+
     MDBoxLayout:
         adaptive_height: True
         padding: dp(10)
         spacing: dp(5)
-        MDLabel:
-            text:f"[font=Roboto]₦[/font]22,000.00"
-            font_style: "H6"
-            size_hint_y: None
-            height: self.texture_size[1]
-            markup: True
-            pos_hint:{"center_y": .5}
-            theme_text_color: "Custom"
-            text_color: app.theme_cls.primary_color
+        MDCard:
+            padding: dp(10)
+            radius: [dp(5)]
+            MDLabel:
+                text:f"[font=Roboto]₦[/font]20,000.00"
+                font_style: "H6"
+                size_hint_y: None
+                height: self.texture_size[1]
+                markup: True
+                pos_hint:{"center_y": .5}
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.primary_color
         MDIconButton:
             icon: "heart-outline"
             theme_text_color: "Custom"
             text_color: get_color_from_hex("FF1744")
-    AsyncImage:
-        id: image
-        source: root.source
-        anim_delay: .1
-        canvas.before:
-            StencilPush
-            RoundedRectangle:
-                pos: self.pos
-                size: self.size
-                radius: root.radius
-            StencilUse
+    BoxButton:
+        orientation: "vertical"
+        on_release: print("hello")
+        AsyncImage:
+            id: image
+            source: root.source
+            anim_delay: .1
+            canvas.before:
+                StencilPush
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: root.radius
+                StencilUse
 
-        canvas.after:
-            StencilUnUse
-            RoundedRectangle:
-                size: self.size
-                pos: self.pos
-                radius: root.radius
-            StencilPop
+            canvas.after:
+                StencilUnUse
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: root.radius
+                StencilPop
+        MDBoxLayout:
+            adaptive_height: True
+            orientation: "vertical"
+            padding: dp(10)
+            spacing: dp(5)
+            MDLabel:
+                text: "Onye Owa Shoes"
+                font_style: "H6"
+                size_hint_y: None
+                height: self.texture_size[1]
+                markup: True
+            NocenStore
     MDBoxLayout:
         adaptive_height: True
-        orientation: "vertical"
         padding: dp(10)
-        spacing: dp(5)
-        MDLabel:
-            text: "Onye Owa Shoes"
-            font_style: "H6"
-            size_hint_y: None
-            height: self.texture_size[1]
-            markup: True
-    NocenStore
-        radius: [0, root.radius[0], 0, root.radius[0]]
+        CardButton:
+            id: bt
+            md_bg_color: app.theme_cls.primary_color
+            text: "Add To Cart"
+            radius: [dp(20)]
+            on_release: print("hello", args)
 
 <NocenStore@MDBoxLayout>:
     adaptive_height: True

@@ -39,6 +39,7 @@ class ErrandBoy(MDApp):
                 "H4": [f"{font_folder}DINAlternate-bold", 34, False, 0.25],
                 "H5": [f"{font_folder}DINAlternate-bold", 24, False, 0],
                 "H6": [f"{font_folder}DINAlternate-bold", 20, False, 0.15],
+                "Button": [f"{font_folder}DINAlternate-bold", 14, True, 1.25],
                 "Body1": [f"{font_folder}DINAlternate-bold", 16, False, 0.5],
                 "Body2": [f"{font_folder}DINAlternate-bold", 14, False, 0.25],
             }
