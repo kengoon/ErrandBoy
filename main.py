@@ -9,10 +9,11 @@ from kivy.clock import Clock
 from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivymd_extensions.akivymd.uix.statusbarcolor import change_statusbar_color
-from tools.iconfonts import font_folder, register
+from tools.iconfonts import register
 from classes.m_cardtextfield import M_CardTextField
 from classes.miracle import TopLayer, MiddleLayer, FloatingButton, LayerContent, ScrollLayer
 
+font_folder = "assets/fonts/"
 Loader.loading_image = "assets/images/loader.gif"
 r = Factory.register
 r("TopLayer", cls=TopLayer)

@@ -1,12 +1,5 @@
 <Home>:
     name: "home"
-    on_enter:
-        home.ids._icon.markup = True
-        home.ids._icon.text = icon("home")
-        cat.ids._icon.markup = True
-        cat.ids._icon.text = icon("category")
-        settings.ids._icon.markup = True
-        settings.ids._icon.text = icon("settings")
     BoxLayout:
         orientation: "vertical"
         TopInfo:
@@ -38,12 +31,21 @@
             NavButton:
                 id: home
                 text: "home"
+                on_kv_post:
+                    self.ids._icon.markup = True
+                    self.ids._icon.text = icon("home")
             NavButton:
                 id: cat
                 text: "category"
+                on_kv_post:
+                    self.ids._icon.markup = True
+                    self.ids._icon.text = icon("category")
             NavButton:
                 id: settings
                 text: "settings"
+                on_kv_post:
+                    self.ids._icon.markup = True
+                    self.ids._icon.text = icon("settings")
 
 
 

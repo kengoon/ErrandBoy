@@ -47,8 +47,9 @@
                 size_hint_x: None
                 width: Window.width/2.5
                 pos_hint: {"center_x": .5}
-                Image:
+                RoundedImage:
                     source: f"{image_path}shoes.jpg"
+                    radius: [dp(10)]
         MDLabel:
             text: f"[font=Roboto]₦[/font]200,000.00"
             halign: "center"
@@ -149,6 +150,7 @@
         id: search
         adaptive_height: True
         padding: dp(10)
+        spacing: dp(20)
         M_CardTextField:
             elevation: 10
             hint_text: "search"
@@ -208,25 +210,10 @@
             icon: "heart-outline"
             theme_text_color: "Custom"
             text_color: get_color_from_hex("FF1744")
-    AsyncImage:
+    RoundedImage:
         id: image
         source: root.source
-        anim_delay: .1
-        canvas.before:
-            StencilPush
-            RoundedRectangle:
-                pos: self.pos
-                size: self.size
-                radius: root.radius
-            StencilUse
 
-        canvas.after:
-            StencilUnUse
-            RoundedRectangle:
-                size: self.size
-                pos: self.pos
-                radius: root.radius
-            StencilPop
     MDBoxLayout:
         adaptive_height: True
         orientation: "vertical"
@@ -256,3 +243,20 @@
         size_hint_y: None
         height: self.texture_size[1]
         halign: "center"
+
+<RoundedImage@AsyncImage>:
+    radius: [dp(5)]
+    canvas.before:
+        StencilPush:
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: self.radius if self.radius else [dp(5)]
+        StencilUse
+    canvas.after:
+        StencilUnUse:
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: self.radius if self.radius else [dp(5)]
+        StencilPop

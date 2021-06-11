@@ -9,7 +9,7 @@ _register = OrderedDict()
 
 if not PY2:
     unichr = chr
-font_folder = "assets/fonts/"
+
 
 def register(name, ttf_fname, fontd_fname):
     """Register an Iconfont
