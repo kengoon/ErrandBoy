@@ -8,6 +8,7 @@ from kivymd.app import MDApp
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import CircularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.card import MDCard
 
 app = MDApp.get_running_app()
 
