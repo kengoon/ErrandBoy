@@ -5,10 +5,12 @@
 <MDLabel>:
     theme_text_color: "Custom"
     color: get_color_from_hex("#263238")
-<ProfilePix@Widget>:
+<ProfilePix@ButtonBehavior+Widget>:
     size_hint: None, None
     size: dp(60), dp(60)
     source: ""
+    on_release:
+        print("hello")
     canvas.before:
         Color:
             rgba: 1,1,1,1
@@ -38,23 +40,29 @@
                 theme_text_color: "Custom"
                 text_color: get_color_from_hex("FF1744")
     MDBoxLayout:
-        MDCard:
-            elevation: 10
-            radius: [dp(10)]
-            Image:
-                source: f"{image_path}shoe.jpg"
+        RelativeLayout:
+            MDCard:
+                elevation: 10
+                radius: [dp(10)]
+                size_hint_x: None
+                width: Window.width/2.5
+                pos_hint: {"center_x": .5}
+                Image:
+                    source: f"{image_path}shoes.jpg"
         MDLabel:
             text: f"[font=Roboto]₦[/font]200,000.00"
             halign: "center"
             markup: True
             font_style: "H6"
             size_hint_x:.7
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.primary_color
     MDBoxLayout:
         adaptive_height: True
         spacing: dp(10)
         MDCard:
             size_hint_y: None
-            height:dp(56)
+            height:dp(45)
             md_bg_color: app.theme_cls.primary_color
             radius: [dp(7), dp(20), dp(7), dp(20)]
             ripple_behavior: True
@@ -66,7 +74,7 @@
                 text_color: 1,1,1,1
         MDCard:
             size_hint_y: None
-            height:dp(56)
+            height:dp(45)
             md_bg_color: get_color_from_hex("00B8D4")
             radius: [dp(7), dp(20), dp(7), dp(20)]
             ripple_behavior: True
@@ -78,7 +86,7 @@
                 text_color: 1,1,1,1
         MDCard:
             size_hint_y: None
-            height:dp(56)
+            height:dp(45)
             md_bg_color: get_color_from_hex("6200EA")
             radius: [dp(7), dp(20), dp(7), dp(20)]
             ripple_behavior: True
@@ -95,7 +103,7 @@
     swipers: []
     Carousel:
         size_hint_y: None
-        height: Window.height/3
+        height: Window.height/2.5
         pagnitors:[_0, _1, _2, _3]
         on_index:
             root.swipe_pagnitors(*args)
@@ -109,15 +117,15 @@
             id: s3
     RelativeLayout:
         size_hint_y:None
-        height: dp(50)
+        height: dp(10)
         MDBoxLayout:
             adaptive_size: True
             spacing: dp(10)
             pos_hint: {"center_x": .5}
-            MDIconButton:
-                on_text:
-                    self.lbl_txt.markup = True
-                    self.lbl_txt.text = icon("chevron_left")
+#            MDIconButton:
+#                on_text:
+#                    self.lbl_txt.markup = True
+#                    self.lbl_txt.text = icon("chevron_left")
             ItemPagination
                 id: _0
             ItemPagination:
@@ -129,30 +137,31 @@
             ItemPagination:
                 id: _3
                 current_index: 3
-            MDIconButton:
-                on_text:
-                    self.lbl_txt.markup = True
-                    self.lbl_txt.text = icon("chevron_right")
+#            MDIconButton:
+#                on_text:
+#                    self.lbl_txt.markup = True
+#                    self.lbl_txt.text = icon("chevron_right")
 
 <TopInfo@MDBoxLayout>:
     orientation: "vertical"
     adaptive_height: True
     MDBoxLayout:
+        id: search
         adaptive_height: True
         padding: dp(10)
-        spacing: dp(20)
-        MDCard:
-            padding: dp(5)
-            radius: [dp(10)]
-            size_hint_y: None
-            height: self.minimum_height
-            MDLabel:
-                text: "Errand Boy (Ọnye Ozi)"
-                font_style: "H4"
-                theme_text_color: "Custom"
-                text_color: app.theme_cls.primary_color
-                size_hint_y: None
-                height: self.texture_size[1]
+        M_CardTextField:
+            elevation: 10
+            hint_text: "search"
+            icon_right: icon("search")
+            radius: dp(20)
+            text_field_disabled: True
+            icon_right_color: app.theme_cls.primary_color
+            icon_left_color: app.theme_cls.primary_color
+            foreground_color: [0, 0, 0, 0.8] if app.theme_cls.theme_style == "Light" else [1,1,1,1]
+            cursor_color: [0, 0, 0, .7] if app.theme_cls.theme_style == "Light" else [1,1,1,1]
+            md_bg_color: [1,1,1,1] if app.theme_cls.theme_style == "Light" else get_color_from_hex("1f1f1f")
+            background_color: [1,1,1,1] if app.theme_cls.theme_style == "Light" else get_color_from_hex("1f1f1f")
+            disabled_foreground_color: [0.5, 0.5, 0.5, 1.0]
         ProfilePix:
             source: f"{image_path}p.png"
 <ItemPagination>
@@ -187,14 +196,18 @@
         padding: dp(10)
         spacing: dp(5)
         MDLabel:
-            text:f"[color={get_hex_from_color(app.theme_cls.primary_color)}][font=Roboto]₦[/font][/color]22,000.00"
+            text:f"[font=Roboto]₦[/font]22,000.00"
             font_style: "H6"
             size_hint_y: None
             height: self.texture_size[1]
             markup: True
             pos_hint:{"center_y": .5}
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.primary_color
         MDIconButton:
-            icon: "heart"
+            icon: "heart-outline"
+            theme_text_color: "Custom"
+            text_color: get_color_from_hex("FF1744")
     AsyncImage:
         id: image
         source: root.source
@@ -204,7 +217,7 @@
             RoundedRectangle:
                 pos: self.pos
                 size: self.size
-                radius: [root.radius[0]]
+                radius: root.radius
             StencilUse
 
         canvas.after:
@@ -212,7 +225,7 @@
             RoundedRectangle:
                 size: self.size
                 pos: self.pos
-                radius: [root.radius[0]]
+                radius: root.radius
             StencilPop
     MDBoxLayout:
         adaptive_height: True
@@ -225,5 +238,21 @@
             size_hint_y: None
             height: self.texture_size[1]
             markup: True
+    NocenStore
+        radius: [0, root.radius[0], 0, root.radius[0]]
 
-
+<NocenStore@MDBoxLayout>:
+    adaptive_height: True
+    size_hint_x: None
+    width: Window.width/3
+    md_bg_color: 0,1,0,.1
+    pos_hint:{"center_y": .5}
+    radius: [dp(5)]
+    MDLabel:
+        id: la
+        text: "NOCENSTORE"
+        italic: True
+        color: app.theme_cls.primary_color
+        size_hint_y: None
+        height: self.texture_size[1]
+        halign: "center"

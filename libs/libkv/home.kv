@@ -11,34 +11,16 @@
         orientation: "vertical"
         TopInfo:
             id: top_info
-        MDBoxLayout:
-            id: search
-            adaptive_height: True
-            padding: dp(10)
-            M_CardTextField:
-                elevation: 10
-                hint_text: "search"
-                icon_right: icon("search")
-                radius: dp(20)
-                text_field_disabled: True
-                icon_right_color: app.theme_cls.primary_color
-                icon_left_color: app.theme_cls.primary_color
-                foreground_color: [0, 0, 0, 0.8] if app.theme_cls.theme_style == "Light" else [1,1,1,1]
-                cursor_color: [0, 0, 0, .7] if app.theme_cls.theme_style == "Light" else [1,1,1,1]
-                md_bg_color: [1,1,1,1] if app.theme_cls.theme_style == "Light" else get_color_from_hex("1f1f1f")
-                background_color: [1,1,1,1] if app.theme_cls.theme_style == "Light" else get_color_from_hex("1f1f1f")
-                disabled_foreground_color: [0.5, 0.5, 0.5, 1.0]
+
         CarouselLayout:
             id: swipe
         RecycleView:
             id: rv
-            data: [{"source": f"{image_path}shoe.jpeg"}, {"source": f"{image_path}shoe.jpeg"}, {"source": f"{image_path}shoe.jpeg"}, {"source": f"{image_path}shoe.jpeg"}]
-            effect_cls: ScrollEffect
+            data: [{"source": f"{image_path}shoes.jpg"}, {"source": f"{image_path}shoes.jpg"}, {"source": f"{image_path}shoes.jpg"}, {"source": f"{image_path}shoes.jpg"}]
+            effect_cls: _ScrollViewHardStop
             viewclass: "Products"
             do_scroll_x: True
             do_scroll_y: False
-            size_hint_y: None
-            height: Window.height - (swipe.height + top_info.height + search.height + nav.height)
             RecycleBoxLayout:
                 id: holder
                 root: root.manager
@@ -48,9 +30,9 @@
                 size_hint_x: None
                 width: self.minimum_width
                 spacing:dp(10)
-                padding: dp(20)
+                padding: dp(10)
                 orientation: "horizontal"
-                key_size: "height"
+                key_size: "width"
         AKBottomNavigation2:
             id: nav
             NavButton:
