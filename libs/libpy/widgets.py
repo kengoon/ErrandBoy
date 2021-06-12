@@ -1,14 +1,13 @@
 from kivy.animation import Animation
 from kivy.clock import Clock
-from kivy.properties import NumericProperty, ListProperty, ColorProperty, StringProperty
+from kivy.properties import NumericProperty, ListProperty
 from kivy.uix.stencilview import StencilView
 from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex
 from kivymd.app import MDApp
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import CircularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.card import MDCard
+from kivymd.uix.tab import MDTabsBase
 
 app = MDApp.get_running_app()
 
@@ -31,3 +30,7 @@ class CarouselLayout(MDBoxLayout, StencilView):
                 Animation(rgba=app.theme_cls.primary_color, d=0.3).start(pagnitor.canvas.children[0])
                 continue
             Animation(rgba=pagnitor.color_round_not_active, d=0.3).start(pagnitor.canvas.children[0])
+
+
+class Tab(MDBoxLayout, MDTabsBase):
+    pass

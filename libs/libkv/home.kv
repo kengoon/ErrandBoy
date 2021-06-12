@@ -2,50 +2,69 @@
     name: "home"
     BoxLayout:
         orientation: "vertical"
-        TopInfo:
-            id: top_info
+        ScreenManager:
+            id: manager
+            Screen:
+                name: "home"
+                BoxLayout:
+                    orientation: "vertical"
+                    TopInfo:
+                        id: top_info
 
-        CarouselLayout:
-            id: swipe
-        RecycleView:
-            id: rv
-            data: [{"source": f"{image_path}shoes.jpg"}, {"source": f"{image_path}shoes.jpg"}, {"source": f"{image_path}shoes.jpg"}, {"source": f"{image_path}shoes.jpg"}]
-            effect_cls: _ScrollViewHardStop
-            viewclass: "Products"
-            do_scroll_x: True
-            do_scroll_y: False
-            RecycleBoxLayout:
-                id: holder
-                root: root.manager
-                roots: root
-                default_size_hint: None, 1
-                default_size: None, None
-                size_hint_x: None
-                width: self.minimum_width
-                spacing:dp(10)
-                padding: dp(10)
-                orientation: "horizontal"
-                key_size: "width"
+                    CarouselLayout:
+                        id: swipe
+                    RecycleView:
+                        id: rv
+                        data: [{"source": f"{image_path}shoes.jpg"}, {"source": f"{image_path}shoes.jpg"}, {"source": f"{image_path}shoes.jpg"}, {"source": f"{image_path}shoes.jpg"}]
+                        effect_cls: _ScrollViewHardStop
+                        viewclass: "Products"
+                        do_scroll_x: True
+                        do_scroll_y: False
+                        RecycleBoxLayout:
+                            id: holder
+                            root: root.manager
+                            roots: root
+                            default_size_hint: None, 1
+                            default_size: None, None
+                            size_hint_x: None
+                            width: self.minimum_width
+                            spacing:dp(10)
+                            padding: dp(10)
+                            orientation: "horizontal"
+                            key_size: "width"
+            Category:
         AKBottomNavigation2:
             id: nav
             NavButton:
                 id: home
                 text: "home"
+                _init: False
                 on_kv_post:
                     self.ids._icon.markup = True
                     self.ids._icon.text = icon("home")
+                on_release:
+                    manager.transition.direction = "right"
+                    manager.current = "home"
+
             NavButton:
                 id: cat
                 text: "category"
                 on_kv_post:
                     self.ids._icon.markup = True
                     self.ids._icon.text = icon("category")
+                on_release:
+                    manager.transition.direction = "left" if manager.current == "home" else "right"
+                    manager.current = "category"
+
             NavButton:
                 id: settings
                 text: "settings"
                 on_kv_post:
                     self.ids._icon.markup = True
                     self.ids._icon.text = icon("settings")
+                on_release:
+                    manager.transition.direction = "left"
+                    manager.current = "home"
 
 
 

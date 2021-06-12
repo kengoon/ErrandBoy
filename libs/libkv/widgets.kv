@@ -63,14 +63,10 @@
                 RoundedImage:
                     source: f"{image_path}shoes.jpg"
                     radius: [dp(10)]
-        MDLabel:
+        MoneyLabel:
             text: f"[font=Roboto]₦[/font]200,000.00"
             halign: "center"
-            markup: True
-            font_style: "H6"
             size_hint_x:.7
-            theme_text_color: "Custom"
-            text_color: app.theme_cls.primary_color
     MDBoxLayout:
         adaptive_height: True
         spacing: dp(10)
@@ -183,7 +179,7 @@
     orientation: "vertical"
     radius: [dp(10)]
     size_hint_x: None
-    width: Window.width/2.5
+    width: Window.width/2.2
     source: ""
 
     MDBoxLayout:
@@ -193,15 +189,11 @@
         MDCard:
             padding: dp(10)
             radius: [dp(5)]
-            MDLabel:
+            MoneyLabel:
                 text:f"[font=Roboto]₦[/font]20,000.00"
-                font_style: "H6"
                 size_hint_y: None
                 height: self.texture_size[1]
-                markup: True
                 pos_hint:{"center_y": .5}
-                theme_text_color: "Custom"
-                text_color: app.theme_cls.primary_color
         MDIconButton:
             icon: "heart-outline"
             theme_text_color: "Custom"
@@ -267,3 +259,53 @@
             pos: self.pos
             radius: self.radius if self.radius else [dp(5)]
         StencilPop
+<MoneyLabel@MDLabel>:
+    text:f""
+    font_style: "H6"
+    markup: True
+    pos_hint:{"center_y": .5}
+    theme_text_color: "Custom"
+    text_color: app.theme_cls.primary_color
+
+<ProductLandscape@MDCard>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: Window.height/4
+    radius: [dp(30)]
+    padding: [dp(20), dp(10), dp(10), dp(10)]
+    spacing: dp(10)
+    MDBoxLayout:
+        MDBoxLayout:
+            spacing: dp(5)
+            orientation: "vertical"
+            MDLabel:
+                text: "Best Shoes"
+                font_style: "H6"
+            MoneyLabel:
+                text: "[font=Roboto]₦[/font]20,000.00"
+            MDCard:
+                size_hint: None, None
+                size: self.minimum_size
+                radius: [dp(20)]
+                elevation: 0.2
+                MDIconButton:
+                    icon: "heart-outline"
+                    theme_text_color: "Custom"
+                    text_color: get_color_from_hex("FF1744")
+            CardButton:
+                text: "Buy Now"
+                md_bg_color: app.theme_cls.primary_color
+                radius: [dp(7), dp(20), dp(7), dp(20)]
+        BoxButton:
+            orientation: "vertical"
+            RoundedImage:
+                source: f"{image_path}shoes.jpg"
+                radius: root.radius
+            MDBoxLayout:
+                adaptive_height: True
+                MDLabel:
+                    text: f"click to view{icon('touch_app', color='#FF8F00')}"
+                    markup: True
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    halign: "center"

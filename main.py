@@ -1,4 +1,5 @@
 import os
+from functools import partial
 from threading import Thread
 from time import sleep
 
@@ -30,7 +31,8 @@ class ErrandBoy(MDApp):
         super().__init__(**kwargs)
         self.theme_cls.primary_palette = "Green"
         self.theme_cls.primary_hue = "A700"
-        self.screen_length = (1 / (len(os.listdir("libs/libkv")) - 1)) * 100
+        self.screen_length = (1 / (len(os.listdir("libs/libkv")))) * 100
+        self.progress_total = self.screen_length * len(os.listdir("libs/libkv"))
         change_statusbar_color(self.theme_cls.primary_color)
         self.theme_cls.font_styles.update(
             {
@@ -53,22 +55,25 @@ class ErrandBoy(MDApp):
         Thread(target=self._initiate_server_connection).start()
 
     def _initiate_server_connection(self):
-        sleep(5)
         for modules in os.listdir("libs/libpy"):
-            exec(f"from libs.libpy import {modules.rstrip('.pyc')}")
-        for files in os.listdir("libs/libkv"):
+            exec(f"from libs.libpy import {modules.split('.')[0]}")
+        for files in os.listdir("libs/libkv")[::-1] if platform == "android" else os.listdir("libs/libkv"):
             Builder.load_file(f"libs/libkv/{files}")
-            if files == "widgets.kv":
+            if files == "widgets.kv" or "2" in files:
+                sleep(0.5)
+                self.root.ids.progress_bar.current_percent += self.screen_length
+                if self.root.ids.progress_bar.current_percent == self.progress_total:
+                    Clock.schedule_once(lambda x: exec("self.root.current = 'home'", {"self": self}), 1)
                 continue
-            Clock.schedule_once(lambda x: self.add_screen(files.split(".")[0].capitalize()), 0.5)
+            Clock.schedule_once(partial(self.add_screen, files.split(".")[0].capitalize()), 1)
 
-    def add_screen(self, widget):
+    def add_screen(self, widget, _):
         widget_obj = eval(f"Factory.{widget}()")
         self.root.add_widget(widget_obj)
         self.root.ids.update({widget.lower(): widget_obj})
         self.root.ids.progress_bar.current_percent += self.screen_length
-        if self.root.ids.progress_bar.current_percent == 100:
-            Clock.schedule_once(lambda x: exec("self.root.current = 'home'", {"self": self}), 5)
+        if self.root.ids.progress_bar.current_percent == self.progress_total:
+            Clock.schedule_once(lambda x: exec("self.root.current = 'home'", {"self": self}), 2.5)
 
     @staticmethod
     def on_focus(value):

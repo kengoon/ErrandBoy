@@ -1,0 +1,27 @@
+<Category>:
+    name: "category"
+    BoxLayout:
+        orientation: "vertical"
+        TopInfo:
+        MDTabs:
+            background_color: get_color_from_hex("#FAFAFA")
+            text_color_normal: get_color_from_hex("#A5D6A7")
+            text_color_active: app.theme_cls.primary_color
+            indicator_color: app.theme_cls.primary_color
+            fixed_tab_label_width: Window.width/5 if platform != "android" else self.fixed_tab_label_width
+            allow_stretch: False
+            Tab:
+                title: icon("icecream", size=40)
+                RV
+            Tab:
+                title: icon("grass", size=40)
+                RV
+            Tab:
+                title: icon("ramen_dining", size=40)
+                RV
+            Tab:
+                title: icon("liquor", size=40)
+                RV
+            Tab:
+                title: icon("architecture", size=40)
+                RV
