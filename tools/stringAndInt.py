@@ -1,12 +1,7 @@
 # program converting string or integer to list continuously
-def stringInt():
-    while True:  # while loop for testing.
-        string = str(input('Enter your message ["exit" to quit]> '))
-        if string.lower() == 'exit':
-            break
-        convertList = list(string)
-        print(convertList)  # while to return, remove the print function and then add return
+def string_int(string):
+    return list(string)
 
 
 if __name__ == '__main__':
-    stringInt()
+    print(string_int('1237893444787600.00'))
