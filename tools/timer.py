@@ -3,6 +3,7 @@ import time
 
 def hello():
     print('Hello and welcome to Python\'s world oof programming')
+    print('Welcome to the programming world, where we eat python (not the snake!!!) as food')
 
 
 def timer():
