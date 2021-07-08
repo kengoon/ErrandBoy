@@ -1,5 +1,7 @@
 <Category>:
     name: "category"
+    on_enter:
+        self.update_rv_data(rv1)
     BoxLayout:
         orientation: "vertical"
         TopInfo:
@@ -10,18 +12,31 @@
             indicator_color: app.theme_cls.primary_color
             fixed_tab_label_width: Window.width/5 if platform != "android" else self.fixed_tab_label_width
             allow_stretch: False
+            lock_swiping: True
+            on_tab_switch:
+                root.update_rv_data(args[1].children[0])
             Tab:
-                title: icon("icecream", size=40)
-                RV
+                title: icon("icecream", size=24 if platform != "android" else 40)
+                name: "snacks"
+                RV:
+                    id: rv1
             Tab:
-                title: icon("grass", size=40)
-                RV
+                title: icon("grass", size=24 if platform != "android" else 40)
+                name: "vegetables"
+                RV:
+                    id: rv2
             Tab:
-                title: icon("ramen_dining", size=40)
-                RV
+                title: icon("ramen_dining", size=24 if platform != "android" else 40)
+                name: "food"
+                RV:
+                    id: rv3
             Tab:
-                title: icon("liquor", size=40)
-                RV
+                title: icon("liquor", size=24 if platform != "android" else 40)
+                name: "drinks"
+                RV:
+                    id: rv4
             Tab:
-                title: icon("architecture", size=40)
-                RV
+                title: icon("architecture", size=24 if platform != "android" else 40)
+                name: "materials"
+                RV:
+                    id: rv5

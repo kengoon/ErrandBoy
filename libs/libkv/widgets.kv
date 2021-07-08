@@ -71,9 +71,10 @@
         adaptive_height: True
         spacing: dp(10)
         CardButton:
-            text: "Shop Now"
+            text: "Buy Now"
             md_bg_color: app.theme_cls.primary_color
             radius: [dp(7), dp(20), dp(7), dp(20)]
+            on_release: app.root.current = "lookout"
         CardButton:
             md_bg_color: get_color_from_hex("00B8D4")
             radius: [dp(7), dp(20), dp(7), dp(20)]
@@ -130,28 +131,37 @@
 #                    self.lbl_txt.text = icon("chevron_right")
 
 <TopInfo@MDBoxLayout>:
-    orientation: "vertical"
     adaptive_height: True
-    MDBoxLayout:
-        id: search
-        adaptive_height: True
-        padding: dp(10)
-        spacing: dp(20)
-        M_CardTextField:
-            elevation: 10
-            hint_text: "search"
-            icon_right: icon("search")
-            radius: dp(20)
-            text_field_disabled: True
-            icon_right_color: app.theme_cls.primary_color
-            icon_left_color: app.theme_cls.primary_color
-            foreground_color: [0, 0, 0, 0.8] if app.theme_cls.theme_style == "Light" else [1,1,1,1]
-            cursor_color: [0, 0, 0, .7] if app.theme_cls.theme_style == "Light" else [1,1,1,1]
-            md_bg_color: [1,1,1,1] if app.theme_cls.theme_style == "Light" else get_color_from_hex("1f1f1f")
-            background_color: [1,1,1,1] if app.theme_cls.theme_style == "Light" else get_color_from_hex("1f1f1f")
-            disabled_foreground_color: [0.5, 0.5, 0.5, 1.0]
-        ProfilePix:
-            source: f"{image_path}p.png"
+    padding: [dp(15), dp(5), dp(15), dp(5)]
+    icon_left: icon("menu")
+    icon_right: icon("search")
+    extra_icons_right: {"cart": ["custom", icon("shopping_basket")], "profile": ["source", image_path +"p.png"]}
+    extra_icons_right_color: {"cart": app.theme_cls.primary_color}
+    icon_right_color: app.theme_cls.primary_color
+    icon_left_color: app.theme_cls.primary_color
+    text_field_disabled: False
+    icon_left_callback: lambda x: None
+    extra_icons_right_callback:{}
+    M_CardTextField:
+        elevation: 10
+        hint_text: "Search"
+        icon_left: root.icon_left
+        icon_right: root.icon_right
+        icon_left_callback: root.icon_left_callback
+        font_name: f"{font_path}DINAlternate-bold.ttf"
+        extra_icons_right: root.extra_icons_right
+        extra_icons_right_color: root.extra_icons_right_color
+        extra_icons_right_callback: root.extra_icons_right_callback
+        radius: [dp(10)]
+        text_field_disabled: root.text_field_disabled
+        icon_right_color: root.icon_right_color
+        icon_left_color: root.icon_left_color
+        foreground_color: [0, 0, 0, 0.8] if app.theme_cls.theme_style == "Light" else [1,1,1,1]
+        cursor_color: [0, 0, 0, .7] if app.theme_cls.theme_style == "Light" else [1,1,1,1]
+        md_bg_color: [1,1,1,1] if app.theme_cls.theme_style == "Light" else get_color_from_hex("1f1f1f")
+        background_color: [1,1,1,1] if app.theme_cls.theme_style == "Light" else get_color_from_hex("1f1f1f")
+        disabled_foreground_color: [0.5, 0.5, 0.5, 1.0]
+
 <ItemPagination>
     size_hint: None, None
     size: dp(20), dp(4)
@@ -179,47 +189,47 @@
     orientation: "vertical"
     radius: [dp(10)]
     size_hint_x: None
-    width: Window.width/2.2
+    _size: 0, 0
+    size: self._size
     source: ""
+    spacing: dp(2)
+    on_kv_post:
+        Animation(opacity=1, d=1, t="out_quad").start(self)
 
-    MDBoxLayout:
-        adaptive_height: True
-        padding: dp(10)
-        spacing: dp(5)
-        MDCard:
-            padding: dp(10)
-            radius: [dp(5)]
-            MoneyLabel:
-                text:f"[font=Roboto]₦[/font]20,000.00"
-                size_hint_y: None
-                height: self.texture_size[1]
-                pos_hint:{"center_y": .5}
-        MDIconButton:
-            icon: "heart-outline"
-            theme_text_color: "Custom"
-            text_color: get_color_from_hex("FF1744")
     BoxButton:
         orientation: "vertical"
         on_release: print("hello")
         RoundedImage:
             id: image
+            radius: [root.radius[0], root.radius[0], 0, 0]
             source: root.source
 
         MDBoxLayout:
             adaptive_height: True
             orientation: "vertical"
-            padding: dp(10)
-            spacing: dp(5)
+            padding: [dp(10), 0, dp(10), 0]
             MDLabel:
                 text: "Onye Owa Shoes"
-                font_style: "H6"
                 size_hint_y: None
+                font_style: "H6"
                 height: self.texture_size[1]
                 markup: True
-            NocenStore
     MDBoxLayout:
         adaptive_height: True
-        padding: dp(10)
+        padding: [dp(10), 0, dp(10), 0]
+        spacing: dp(5)
+        MoneyLabel:
+            text:f"[font=Roboto]₦[/font]20,000.00"
+            size_hint_y: None
+            height: self.texture_size[1]
+            pos_hint:{"center_y": .5}
+        MDIconButton:
+            icon: "heart-outline"
+            theme_text_color: "Custom"
+            text_color: get_color_from_hex("FF1744")
+    MDBoxLayout:
+        adaptive_height: True
+        padding: [dp(10), 0, dp(10), dp(5)]
         CardButton:
             id: bt
             md_bg_color: app.theme_cls.primary_color
@@ -240,11 +250,13 @@
         italic: True
         color: app.theme_cls.primary_color
         size_hint_y: None
+        font_style: "Caption"
         height: self.texture_size[1]
         halign: "center"
 
 <RoundedImage@AsyncImage>:
     radius: [dp(5)]
+    anim_delay: .1
     canvas.before:
         StencilPush:
         RoundedRectangle:
@@ -268,44 +280,103 @@
     text_color: app.theme_cls.primary_color
 
 <ProductLandscape@MDCard>:
-    orientation: "vertical"
+    orientation: "horizontal"
     size_hint_y: None
-    height: Window.height/4
+    _size: 0, 0
+    size: self._size
     radius: [dp(30)]
     padding: [dp(20), dp(10), dp(10), dp(10)]
     spacing: dp(10)
-    MDBoxLayout:
+    opacity: 0
+    on_kv_post:
+        Animation(opacity=1, d=1, t="out_quad").start(self)
+    BoxButton:
+        spacing: dp(5)
+        orientation: "vertical"
+        MDLabel:
+            text: "Best Shoes"
+            font_style: "H6"
+        MoneyLabel:
+            text: "[font=Roboto]₦[/font]20,000.00"
+        CardButton:
+            text: "Buy Now"
+            md_bg_color: app.theme_cls.primary_color
+            radius: [dp(7), dp(20), dp(7), dp(20)]
+    BoxButton:
+        orientation: "vertical"
+        radius: root.radius
+        on_release:
+            snack = Snackbar(text="stop touching me, I will tell my mummy for you", \
+            snackbar_x="20dp", snackbar_y="20dp", bg_color=app.theme_cls.primary_color,\
+            radius=[dp(10)])
+            snack.size_hint_x = (Window.width - (snack.snackbar_x * 2)) / Window.width
+            snack.open()
+            #app.root.current = "lookout"
+        RoundedImage:
+            source: f"{image_path}shoes.jpg"
+            radius: root.radius
         MDBoxLayout:
-            spacing: dp(5)
-            orientation: "vertical"
+            adaptive_height: True
             MDLabel:
-                text: "Best Shoes"
-                font_style: "H6"
-            MoneyLabel:
-                text: "[font=Roboto]₦[/font]20,000.00"
-            MDCard:
-                size_hint: None, None
-                size: self.minimum_size
-                radius: [dp(20)]
-                elevation: 0.2
-                MDIconButton:
-                    icon: "heart-outline"
-                    theme_text_color: "Custom"
-                    text_color: get_color_from_hex("FF1744")
-            CardButton:
-                text: "Buy Now"
-                md_bg_color: app.theme_cls.primary_color
-                radius: [dp(7), dp(20), dp(7), dp(20)]
-        BoxButton:
-            orientation: "vertical"
-            RoundedImage:
-                source: f"{image_path}shoes.jpg"
-                radius: root.radius
-            MDBoxLayout:
-                adaptive_height: True
-                MDLabel:
-                    text: f"click to view{icon('touch_app', color='#FF8F00')}"
-                    markup: True
-                    size_hint_y: None
-                    height: self.texture_size[1]
-                    halign: "center"
+                text: f"click to view{icon('touch_app', color='#FF8F00')}"
+                markup: True
+                size_hint_y: None
+                height: self.texture_size[1]
+                halign: "center"
+<IconCard@MDCard>:
+    size_hint: None, None
+    size: self.minimum_size
+    radius: [dp(30)]
+    elevation: 0.2
+    callback: lambda x: None
+    icon: "heart-outline"
+
+    MDIconButton:
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: get_color_from_hex("FF1744")
+<IconButton@MDCard>
+    radius: dp(30)
+    icon: "phone"
+    size_hint_y: None
+    height: self.minimum_height
+    padding: dp(5)
+    spacing: dp(10)
+    elevation: 10
+    text: "call to order"
+    MDIconButton:
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.primary_color
+    MDLabel
+        text: root.text
+        font_style: "Button"
+
+
+
+<SetWidget@BoxButton>:
+    md_bg_color: app.theme_cls.primary_color
+    size_hint_y: None
+    height: dp(100)
+    spacing: dp(10)
+    padding: dp(10)
+    text: ""
+    icon: ""
+    source: ""
+    radius: [dp(20)]
+    MDIcon:
+        source: root.source
+        text: root.icon
+        markup: True
+        size_hint: None, None
+        size: dp(50), dp(50)
+        pos_hint: {"center_y": .5}
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.opposite_text_color
+    MDLabel:
+        text: root.text
+        font_style: "H6"
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.opposite_text_color
+
+

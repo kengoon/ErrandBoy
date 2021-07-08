@@ -1,5 +1,6 @@
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.uix.textinput import TextInput as TI
 from kivy.properties import NumericProperty, ListProperty
 from kivy.uix.stencilview import StencilView
 from kivy.uix.widget import Widget
@@ -23,6 +24,9 @@ class ItemPagination(ThemableBehavior, Widget):
 
 
 class CarouselLayout(MDBoxLayout, StencilView):
+    def __draw_shadow__(self, origin, end, context=None):
+        pass
+
     @staticmethod
     def swipe_pagnitors(instance, index):
         for pagnitor in instance.pagnitors:
@@ -33,4 +37,10 @@ class CarouselLayout(MDBoxLayout, StencilView):
 
 
 class Tab(MDBoxLayout, MDTabsBase):
-    pass
+    def __draw_shadow__(self, origin, end, context=None):
+        pass
+
+
+class TextInput(TI):
+    def insert_text(self, substring, from_undo=False):
+        print(substring)

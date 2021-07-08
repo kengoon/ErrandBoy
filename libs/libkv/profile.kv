@@ -1,0 +1,52 @@
+<Profile>:
+    name: "profile"
+    BoxLayout:
+        orientation: "vertical"
+        MDBoxLayout:
+            id: up
+            md_bg_color: app.theme_cls.primary_light
+            size_hint_y: .3
+        MDBoxLayout:
+            orientation: "vertical"
+            id: down
+            ScrollView:
+                effect_cls: ScrollEffect
+                MDList:
+                    spacing: dp(15)
+                    padding: [dp(10), dp(60), dp(10), dp(10)]
+                    IconButton:
+                        radius: dp(10)
+                        text: "reset password"
+                        icon: "lock-reset"
+                        md_bg_color: app.theme_cls.primary_light
+                    IconButton:
+                        radius: dp(10)
+                        text: "reset phone number"
+                        icon: "phone-return"
+                        md_bg_color: app.theme_cls.primary_light
+                    IconButton:
+                        radius: dp(10)
+                        md_bg_color: app.theme_cls.primary_light
+                        text: "call customer care"
+                        icon: "phone"
+
+    ProfilePix:
+        source: f"{image_path}p.png"
+        size_hint: None, None
+        size: dp(150), dp(150)
+        y: down.height - up.height/3.5
+        pos_hint: {"center_x": .5}
+    MDBoxLayout:
+        adaptive_height: True
+        pos_hint: {"top": 1}
+        padding: dp(10)
+        MDLabel:
+            font_style: "H3"
+            theme_text_color: "Custom"
+            text_color: 1,1,1,1
+            text: "Profile"
+        MDIconButton:
+            icon: "arrow-left"
+            theme_text_color: "Custom"
+            text_color: 1,1,1,1
+            on_release: root.manager.current = "home"

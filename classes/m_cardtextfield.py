@@ -5,13 +5,21 @@ __all__ = ("M_CardTextField",)
 
 import sys
 
-from kivy import platform
+import emoji
+from kivy.core.text.markup import MarkupLabel
+from kivy.graphics.texture import Texture
+from kivy.uix.textinput import TextInput, Cache_append, Cache_get
+from kivy import platform, Logger
+from kivy.factory import Factory
+from emoji import emojize
 from kivy.lang.builder import Builder
 from kivy.metrics import dp
+from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.widget import Widget, WidgetException
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
-from kivymd.uix.behaviors import FakeRectangularElevationBehavior
+from kivymd.uix.behaviors import FakeRectangularElevationBehavior, CircularRippleBehavior
 
 from kivy.properties import (
     StringProperty,
@@ -21,7 +29,8 @@ from kivy.properties import (
     ObjectProperty,
     OptionProperty,
     VariableListProperty,
-    ColorProperty
+    ColorProperty,
+    DictProperty
 )
 from kivy.core.text import DEFAULT_FONT
 from kivy.config import Config
@@ -34,10 +43,23 @@ if Config:
 Builder.load_string(
     """
 # kv_start
+<ProfilePic>:
+    size_hint: None, None
+    size: dp(40), dp(40)
+    ripple_behavior: True
+    canvas.before:
+        Color:
+            rgba: 1,1,1,1
+        Ellipse:
+            size: self.size
+            pos: self.pos
+            source: self.source
+            
 <M_CardTextField>:
     adaptive_height: True
     md_bg_color: 1, 1, 1, 1
     radius: [dp(10)]
+    padding: dp(5)
     MDCard:
         id: card
         ripple_behavior: root.card_ripples
@@ -49,7 +71,7 @@ Builder.load_string(
         md_bg_color: root.md_bg_color
         on_release:
             root.dispatch("on_release")
-        TextInput:
+        EmojiTextInput:
             id: textfield
             grow: True
             text: root.text
@@ -153,6 +175,21 @@ Builder.load_string(
 )
 
 
+class EmojiTextInput(TextInput):
+    def insert_text(self, substring, from_undo=True):
+        if not substring.isascii() and substring:
+            is_emoji = emoji.demojize(substring) == substring
+            self.font_name = DEFAULT_FONT if is_emoji else "assets/fonts/NotoEmoji-661A.ttf"
+        super().insert_text(substring, from_undo=True)
+
+
+class ProfilePic(ButtonBehavior, CircularRippleBehavior, Widget):
+    source = StringProperty("")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+
 class M_CardTextField(MDBoxLayout, FakeRectangularElevationBehavior, ThemableBehavior):
     """
     This is a card text field that looks more like
@@ -210,7 +247,7 @@ class M_CardTextField(MDBoxLayout, FakeRectangularElevationBehavior, ThemableBeh
 
     text = StringProperty("")
 
-    card_padding = NumericProperty(dp(10))
+    card_padding = ListProperty([0, dp(10), 0, dp(10)])
 
     card_spacing = NumericProperty(0)
 
@@ -266,7 +303,7 @@ class M_CardTextField(MDBoxLayout, FakeRectangularElevationBehavior, ThemableBeh
 
     font_context = StringProperty(None, allownone=True)
 
-    font_size = NumericProperty('15sp')
+    font_size = NumericProperty('18sp')
 
     font_name = StringProperty(DEFAULT_FONT)
 
@@ -313,9 +350,30 @@ class M_CardTextField(MDBoxLayout, FakeRectangularElevationBehavior, ThemableBeh
 
     icon_right = StringProperty("")
 
+    extra_icons_right = DictProperty()
+
+    extra_icons_right_widget = DictProperty()
+
+    extra_icons_right_color = DictProperty()
+
+    extra_icons_right_font_name = DictProperty()
+
+    extra_icons_right_disabled = DictProperty()
+
+    extra_icons_right_font_size = DictProperty()
+
+    extra_icons_right_callback = DictProperty()
+
+    extra_icons_right_bg_color = DictProperty()
+
+    """
+    Do Not Use `extra_icons` on a `py` code use on `kv` code
+    `extra_icons` is a work in progress for py code
+    """
+
     def __init__(self, **kwargs):
-        self.icon_right_widget = MDIconButton(theme_text_color="Custom", text_color=[0, 0, 0, 1])
-        self.icon_left_widget = MDIconButton(theme_text_color="Custom", text_color=[0, 0, 0, 1])
+        self.icon_right_widget = MDIconButton(theme_text_color="Custom")
+        self.icon_left_widget = MDIconButton(theme_text_color="Custom")
         super().__init__(**kwargs)
         self.register_event_type("on_text")
         self.register_event_type("on_triple_tap")
@@ -353,14 +411,76 @@ class M_CardTextField(MDBoxLayout, FakeRectangularElevationBehavior, ThemableBeh
             self.icon_right_widget.lbl_txt.markup = True
             self.add_widget(self.icon_right_widget)
             # self.multiline = False
+        if self.extra_icons_right:
+            print(self.extra_icons_right)
+
+    def on_extra_icons_right(self, instance, value):
+        self.extra_icons_right_widget = \
+            {ids: MDIconButton(theme_text_color="Custom") for ids in value}
+        for icon in value:
+            self.extra_icons_right_widget[icon].lbl_txt.markup = True
+            if value[icon][0] == "source":
+                self.extra_icons_right_widget[icon] = ProfilePic(source=value[icon][1], pos_hint={"center_y": .5})
+            elif value[icon][0] == "kivymd":
+                self.extra_icons_right_widget[icon].icon = value[icon][1]
+            elif value[icon][0] == "custom":
+                self.extra_icons_right_widget[icon].lbl_txt.text = value[icon][1]
+            else:
+                raise KeyError("use one of the following key options: 'source', 'kivymd', 'custom'")
+            try:
+                self.add_widget(self.extra_icons_right_widget[icon])
+            except AttributeError:
+                self.children.clear()
+            except WidgetException:
+                self.remove_widget(self.extra_icons_right_widget[icon])
+                self.add_widget(self.extra_icons_right_widget[icon])
+            self.multiline = False
+
+    def on_extra_icons_right_color(self, instance, value):
+        for color in value:
+            if isinstance(self.extra_icons_right_widget[color], ProfilePic):
+                Logger.warn("Ignored: color change ignored on image widget")
+                continue
+            self.extra_icons_right_widget[color].text_color = value[color]
+
+    def on_extra_icons_right_font_name(self, instance, value):
+        for font_name in value:
+            if isinstance(self.extra_icons_right_widget[font_name], ProfilePic):
+                Logger.warn("Ignored: font_name change ignored on image widget")
+            self.extra_icons_right_widget[font_name].font_name = value[font_name]
+
+    def on_extra_icons_right_disabled(self, instance, value):
+        for disable in value:
+            self.extra_icons_right_widget[disable].disabled = value[disable]
+
+    def on_extra_icons_right_font_size(self, instance, value):
+        for font_size in value:
+            if isinstance(self.extra_icons_right_widget[font_size], ProfilePic):
+                self.extra_icons_right_widget[font_size].size = (value[font_size], value[font_size])
+                continue
+            self.extra_icons_right_widget[font_size].disabled = value[font_size]
+
+    def on_extra_icons_right_callback(self, instance, value):
+        for callback in value:
+            self.extra_icons_right_widget[callback].bind(on_release=value[callback])
+
+    def on_extra_icons_right_bg_color(self, instance, value):
+        for color in value:
+            if isinstance(self.extra_icons_right_widget[color], ProfilePic):
+                Logger.warn("Ignored: bg_color change ignored on image widget")
+            self.extra_icons_right_widget[color].md_bg_color = value[color]
 
     def on_icon_left(self, instance, value):
         self.icon_left_widget.lbl_txt.markup = True
         self.icon_left_widget.lbl_txt.text = value
         try:
-            self.add_widget(self.icon_left_widget, index=1)
+            self.add_widget(self.icon_left_widget, index=len(self.children))
         except AttributeError:
             self.children.clear()
+        except WidgetException:
+            self.remove_widget(self.icon_left_widget)
+            self.add_widget(self.icon_left_widget, index=len(self.children))
+        self.multiline = False
         self.multiline = False
 
     def on_icon_left_color(self, instance, value):
@@ -391,6 +511,9 @@ class M_CardTextField(MDBoxLayout, FakeRectangularElevationBehavior, ThemableBeh
             self.add_widget(self.icon_right_widget)
         except AttributeError:
             self.children.clear()
+        except WidgetException:
+            self.remove_widget(self.icon_right_widget)
+            self.add_widget(self.icon_right_widget)
         # self.multiline = False
 
     def on_icon_right_color(self, instance, value):
@@ -473,7 +596,7 @@ class M_CardTextField(MDBoxLayout, FakeRectangularElevationBehavior, ThemableBeh
         simulates on_focus event in kivy default
         TextInput
         """
-        if platform == "android":
+        """if platform == "android":
             from kvdroid import activity
             from android.runnable import run_on_ui_thread
 
@@ -481,8 +604,9 @@ class M_CardTextField(MDBoxLayout, FakeRectangularElevationBehavior, ThemableBeh
             def fix_back_button():
                 activity.onWindowFocusChanged(False)
                 activity.onWindowFocusChanged(True)
+
             if not args[1]:
-                fix_back_button()
+                fix_back_button()"""
 
     def on_quad_touch(self):
         """[summary]

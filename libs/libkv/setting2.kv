@@ -1,0 +1,39 @@
+<Setting>:
+    name: "settings"
+    BoxLayout:
+        orientation: "vertical"
+        MDBoxLayout:
+            adaptive_height: True
+            padding: [dp(20), dp(40), dp(10), dp(10)]
+            MDLabel:
+                text: "Settings"
+                font_style: "H3"
+                size_hint_y: None
+                height: self.texture_size[1]
+        ScrollView:
+            effect_cls: ScrollEffect
+            MDList:
+                cols: 2
+                padding: dp(10)
+                spacing: dp(10)
+                SetWidget:
+                    text: "Switch To NocenStore"
+                    source: f"{image_path}icon.png"
+                SetWidget:
+                    text: "Share To Friends"
+                    icon: icon("share", size=50)
+                SetWidget:
+                    text: "Rate Us"
+                    icon: icon("star_rate", size=50)
+                SetWidget:
+                    text: "About Us"
+                    icon: icon("info", size=50)
+                SetWidget:
+                    text: "Terms & Conditions"
+                    icon: icon("library_books", size=50)
+                SetWidget:
+                    text: "Customer Care"
+                    icon: icon("support_agent", size=50)
+                SetWidget:
+                    text: "Profile"
+                    icon: icon("account_box", size=50)

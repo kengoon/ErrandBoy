@@ -1,5 +1,7 @@
 <Home>:
     name: "home"
+    on_enter:
+        self.update_rv_data(rv)
     BoxLayout:
         orientation: "vertical"
         ScreenManager:
@@ -10,13 +12,13 @@
                     orientation: "vertical"
                     TopInfo:
                         id: top_info
+                        extra_icons_right_callback: {"profile": lambda x: exec("app.root.current = 'profile'")}
 
                     CarouselLayout:
                         id: swipe
                     RecycleView:
                         id: rv
-                        data: [{"source": f"{image_path}shoes.jpg"}, {"source": f"{image_path}shoes.jpg"}, {"source": f"{image_path}shoes.jpg"}, {"source": f"{image_path}shoes.jpg"}]
-                        effect_cls: _ScrollViewHardStop
+                        effect_cls: ScrollEffect
                         viewclass: "Products"
                         do_scroll_x: True
                         do_scroll_y: False
@@ -25,14 +27,15 @@
                             root: root.manager
                             roots: root
                             default_size_hint: None, 1
-                            default_size: None, None
+                            default_size: Window.width/2.2, None
                             size_hint_x: None
                             width: self.minimum_width
                             spacing:dp(10)
                             padding: dp(10)
                             orientation: "horizontal"
-                            key_size: "width"
+                            key_size: "_size"
             Category:
+            Setting:
         AKBottomNavigation2:
             id: nav
             NavButton:
@@ -64,7 +67,7 @@
                     self.ids._icon.text = icon("settings")
                 on_release:
                     manager.transition.direction = "left"
-                    manager.current = "home"
+                    manager.current = "settings"
 
 
 

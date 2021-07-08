@@ -1,0 +1,82 @@
+<ProductView>:
+    name: "lookout"
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: app.theme_cls.primary_color
+        MDBoxLayout:
+            radius: [0, 0, 0, dp(150)]
+            md_bg_color: 1, 1, 1, 1
+            orientation: "vertical"
+            TopInfo:
+                icon_left: icon("arrow_back")
+                icon_left_callback: lambda x: exec("app.root.current = 'home'")
+                extra_icons_right_callback: {"profile": lambda x: exec("app.root.current = 'profile'")}
+            RelativeLayout:
+                padding: dp(10)
+                BoxLayout:
+                    orientation: "vertical"
+                    padding: dp(20)
+                    MDBoxLayout:
+                        adaptive_height: True
+                        MDLabel:
+                            text: "Man Shoes"
+                            font_style: "H3"
+                            size_hint_y: None
+                            height: self.texture_size[1]
+                    RoundedImage:
+                        source: f"{image_path}shoes.jpg"
+                        radius: [dp(10), dp(10), dp(10), dp(150)]
+                    MDBoxLayout:
+                        adaptive_height: True
+                        MDLabel:
+                            text:f"[font=Roboto]₦[/font]20,000.00"
+                            font_style: "H4"
+                            size_hint_y: None
+                            halign: "right"
+                            markup: True
+                            height: self.texture_size[1]
+                            theme_text_color: "Custom"
+                            text_color: app.theme_cls.primary_color
+                IconCard:
+                    pos_hint: {"right": .9, "top": .8}
+                IconButton:
+                    size_hint_x: .5
+                    pos_hint: {"center_x": .3, "center_y": .2}
+
+
+        MDBoxLayout:
+            size_hint_y: .2
+            spacing: dp(10)
+            padding: dp(10)
+            BoxButton:
+                md_bg_color: 1,1,1,1
+                radius: dp(10)
+                size_hint_y: None
+                height: dp(56)
+                padding: dp(3)
+                MDBoxLayout:
+                    md_bg_color: app.theme_cls.primary_color
+                    radius: dp(10)
+                    MDLabel:
+                        halign: "center"
+                        text: "Buy Now"
+                        font_style: "Button"
+                        font_size: dp(18)
+                        theme_text_color: "Custom"
+                        text_color: 1,1,1,1
+            BoxButton:
+                md_bg_color: 1,1,1,1
+                radius: dp(10)
+                size_hint_y: None
+                height: dp(56)
+                padding: dp(3)
+                MDBoxLayout:
+                    md_bg_color: app.theme_cls.primary_color
+                    radius: dp(10)
+                    MDLabel:
+                        halign: "center"
+                        text: "Add To Cart"
+                        font_style: "Button"
+                        font_size: dp(18)
+                        theme_text_color: "Custom"
+                        text_color: 1,1,1,1
