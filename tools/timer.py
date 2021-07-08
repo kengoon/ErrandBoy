@@ -13,15 +13,18 @@ def the_timer(timer, callback=None):
     function you wish to callback."""
     if not callable(callback):
         raise NotImplementedError("'callback' is not a function")
-    start_time = 0
-    while True:
-        callback('hi', 'hello')
-        if start_time == timer:
-            break
+    for i in range(timer):
         time.sleep(1)  # argument taken is equal to the number of seconds the execution can be delayed
-        start_time += 1
+        callback('hi', 'hello')
+
+
+def digital_clock():
+    while True:
+        result = time.strftime('%I:%M:%S %p', time.localtime())
+        print(result, end='\r')
+        time.sleep(1)
 
 
 if __name__ == '__main__':
     the_timer(10, call_me_back)
-
+    digital_clock()
