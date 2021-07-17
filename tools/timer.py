@@ -26,5 +26,5 @@ def digital_clock():
 
 
 if __name__ == '__main__':
-    the_timer(10, call_me_back)
+    #the_timer(10, call_me_back)
     digital_clock()

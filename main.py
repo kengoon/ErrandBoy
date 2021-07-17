@@ -79,7 +79,7 @@ class ErrandBoy(MDApp):
                 continue
             files = files.split(".")[0].capitalize()
             if "_" in files:
-                files = "".join([file.capitalize() for file in files.split("_")]).split(".")[0]
+                files = "".join(file.capitalize() for file in files.split("_")).split(".")[0]
             self.major_screens.append(files)
         self.clock_add = Clock.schedule_interval(lambda x: self.add_screen(self.major_screens[self.next_screen]), 1)
 

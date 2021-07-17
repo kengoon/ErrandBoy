@@ -12,7 +12,7 @@
             indicator_color: app.theme_cls.primary_color
             fixed_tab_label_width: Window.width/5 if platform != "android" else self.fixed_tab_label_width
             allow_stretch: False
-            lock_swiping: True
+            lock_swiping: False
             on_tab_switch:
                 root.update_rv_data(args[1].children[0])
             Tab:
