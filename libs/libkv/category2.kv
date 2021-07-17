@@ -5,38 +5,59 @@
     BoxLayout:
         orientation: "vertical"
         TopInfo:
-        MDTabs:
-            background_color: get_color_from_hex("#FAFAFA")
-            text_color_normal: get_color_from_hex("#A5D6A7")
-            text_color_active: app.theme_cls.primary_color
-            indicator_color: app.theme_cls.primary_color
-            fixed_tab_label_width: Window.width/5 if platform != "android" else self.fixed_tab_label_width
-            allow_stretch: False
-            lock_swiping: False
-            on_tab_switch:
-                root.update_rv_data(args[1].children[0])
-            Tab:
-                title: icon("icecream", size=24 if platform != "android" else 40)
+        ScrollView:
+            id: sv
+            size_hint_y: None
+            height: marker.height
+            do_scroll_y: False
+            effect_cls: _ScrollViewHardStop
+            bar_width: 0
+            MDBoxLayout:
+                id: marker
+                adaptive_size: True
+                padding: dp(10)
+                spacing: dp(20)
+                TabBar:
+                    text: f"{icon('icecream')} Snacks"
+                    root: root
+                    text_color: 1, 1, 1, 1
+                    md_bg_color: app.theme_cls.primary_color
+                TabBar:
+                    text: f"{icon('grass')} Vegetables"
+                    root: root
+                TabBar:
+                    text: f"{icon('ramen_dining')} Foods"
+                    root: root
+                TabBar:
+                    text: f"{icon('liquor')} Drinks"
+                    root: root
+                TabBar:
+                    text: f"{icon('architecture')} Materials"
+                    root: root
+        ScreenManager:
+            id: manager
+            transition: CardTransition(direction="up")
+            Screen:
                 name: "snacks"
                 RV:
                     id: rv1
-            Tab:
-                title: icon("grass", size=24 if platform != "android" else 40)
+            Screen:
                 name: "vegetables"
+                on_enter: root.update_rv_data(rv2)
                 RV:
                     id: rv2
-            Tab:
-                title: icon("ramen_dining", size=24 if platform != "android" else 40)
-                name: "food"
+            Screen:
+                name: "foods"
+                on_enter: root.update_rv_data(rv3)
                 RV:
                     id: rv3
-            Tab:
-                title: icon("liquor", size=24 if platform != "android" else 40)
+            Screen:
                 name: "drinks"
+                on_enter: root.update_rv_data(rv4)
                 RV:
                     id: rv4
-            Tab:
-                title: icon("architecture", size=24 if platform != "android" else 40)
+            Screen:
                 name: "materials"
+                on_enter: root.update_rv_data(rv5)
                 RV:
                     id: rv5
