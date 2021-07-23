@@ -96,7 +96,7 @@ class ErrandBoy(MDApp):
     def change_screen(self, widget):
         self.root.ids.progress_bar.current_percent += self.screen_length
         if widget.lower() == "home":
-            Clock.schedule_once(lambda x: exec("self.root.current = 'home'", {"self": self}), 1)
+            Clock.schedule_once(lambda x: exec("self.root.current = 'login'", {"self": self}), 1)
 
     @staticmethod
     def on_focus(value):

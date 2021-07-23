@@ -411,8 +411,6 @@ class M_CardTextField(MDBoxLayout, FakeRectangularElevationBehavior, ThemableBeh
             self.icon_right_widget.lbl_txt.markup = True
             self.add_widget(self.icon_right_widget)
             # self.multiline = False
-        if self.extra_icons_right:
-            print(self.extra_icons_right)
 
     def on_extra_icons_right(self, instance, value):
         self.extra_icons_right_widget = \
@@ -472,7 +470,10 @@ class M_CardTextField(MDBoxLayout, FakeRectangularElevationBehavior, ThemableBeh
 
     def on_icon_left(self, instance, value):
         self.icon_left_widget.lbl_txt.markup = True
-        self.icon_left_widget.lbl_txt.text = value
+        if "[" in value:
+            self.icon_left_widget.lbl_txt.text = value
+        else:
+            self.icon_left_widget.icon = value
         try:
             self.add_widget(self.icon_left_widget, index=len(self.children))
         except AttributeError:
@@ -506,7 +507,10 @@ class M_CardTextField(MDBoxLayout, FakeRectangularElevationBehavior, ThemableBeh
 
     def on_icon_right(self, instance, value):
         self.icon_right_widget.lbl_txt.markup = True
-        self.icon_right_widget.lbl_txt.text = value
+        if "[" in value:
+            self.icon_right_widget.lbl_txt.text = value
+        else:
+            self.icon_right_widget.icon = value
         try:
             self.add_widget(self.icon_right_widget)
         except AttributeError:

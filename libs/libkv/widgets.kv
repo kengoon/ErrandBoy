@@ -343,14 +343,21 @@
     padding: dp(5)
     spacing: dp(10)
     elevation: 10
+    font_size: dp(14)
     text: "call to order"
+    ripple_behavior: True
+    text_color: app.theme_cls.text_color
+    icon_color: app.theme_cls.primary_color
     MDIconButton:
         icon: root.icon
         theme_text_color: "Custom"
-        text_color: app.theme_cls.primary_color
+        text_color: root.icon_color
     MDLabel
         text: root.text
         font_style: "Button"
+        font_size: root.font_size
+        theme_text_color: "Custom"
+        text_color: root.text_color
 
 
 
@@ -400,4 +407,39 @@
         font_size: dp(18)
         theme_text_color: "Custom"
         text_color: root.text_color
+
+
+<TextField@MDBoxLayout>:
+    adaptive_height: True
+    spacing: dp(10)
+    password: False
+    hint_text: ""
+    icon: "account"
+    field: field
+    input_filter: None
+    canvas.before:
+        Color:
+            rgba: app.theme_cls.primary_color
+        BorderImage:
+            size: self.size
+            pos: self.pos
+            source: f"{image_path}border.png"
+    MDIconButton:
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: get_color_from_hex("#00BFA5")
+    TextInput:
+        id: field
+        hint_text: root.hint_text
+        background_active: ""
+        background_color: 0, 0, 0, 0
+        background_normal: ""
+        password: root.password
+        size_hint_y: None
+        font_size: dp(16)
+        multiline: False
+        pos_hint: {"center_y": .5}
+        height: self.minimum_height
+        cursor_color: app.theme_cls.primary_color
+        input_filter: root.input_filter
 

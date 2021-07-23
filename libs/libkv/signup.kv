@@ -1,0 +1,65 @@
+<SignUp>:
+    name: "signup"
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: app.theme_cls.primary_color
+        MDBoxLayout:
+            size_hint_y: .2
+        MDCard:
+            radius: dp(100), dp(100), 0, 0
+            ScrollView:
+                MDList:
+                    spacing: dp(15)
+                    padding: dp(15)
+                    Image:
+                        source: f"{image_path}logo.png"
+                        size_hint_y: None
+                        height: dp(100)
+                    MDBoxLayout:
+                        adaptive_height: True
+                        MDLabel:
+                            adaptive_height: True
+                            font_style: "H4"
+                            text: "Sign Up To NocenStore"
+                            halign: "center"
+                            markup: True
+                            color: get_color_from_hex("#00BFA5")
+
+                    M_CardTextField:
+                        hint_text: "full name"
+                        icon_left: "account"
+                        icon_left_color: get_color_from_hex("#00BFA5")
+
+                    M_CardTextField:
+                        hint_text: "email"
+                        icon_left: "email"
+                        icon_left_color: get_color_from_hex("#00BFA5")
+
+                    M_CardTextField:
+                        hint_text: "password"
+                        icon_left: "lock"
+                        icon_right: "eye"
+                        icon_right_color: get_color_from_hex("#00BFA5")
+                        icon_left_color: get_color_from_hex("#00BFA5")
+
+                    M_CardTextField:
+                        hint_text: "confirm password"
+                        icon_left: "lock"
+                        icon_right: "eye"
+                        icon_right_color: get_color_from_hex("#00BFA5")
+                        icon_left_color: get_color_from_hex("#00BFA5")
+
+                    MDRelativeLayout:
+                        adaptive_height: True
+                        IconButton:
+                            radius: dp(20)
+                            icon: "login"
+                            text: "Sign Up To NocenStore"
+                            md_bg_color: app.theme_cls.primary_color
+                            text_color: 1,1,1,1
+                            icon_color: 1,1,1,1
+                            size_hint_x: .8
+                            font_size: dp(16)
+                            pos_hint: {"center_x": .5, "center_y": .6}
+                            on_release: root.manager.current = "home"
+

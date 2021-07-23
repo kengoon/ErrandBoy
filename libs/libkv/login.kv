@@ -1,0 +1,58 @@
+<Login>:
+    name: "login"
+    BoxLayout:
+        orientation: "vertical"
+        MDBoxLayout:
+            md_bg_color: app.theme_cls.primary_color
+            radius: [0, 0, dp(100), dp(100)]
+        MDBoxLayout:
+    MDCard:
+        radius: [dp(20), dp(80), dp(20), dp(80)]
+        size_hint: .9, .75
+        pos_hint: {"center_x": .5, "center_y": .5}
+        orientation: "vertical"
+        Image:
+            source: f"{image_path}logo.png"
+            size_hint_y: .5
+        MDBoxLayout:
+            size_hint_y: .5
+            MDLabel:
+                font_style: "H4"
+                text: "Login To NocenStore"
+                halign: "center"
+                markup: True
+                color: get_color_from_hex("#00BFA5")
+        MDBoxLayout:
+            padding: dp(15)
+            orientation: "vertical"
+            spacing: dp(20)
+            M_CardTextField:
+                hint_text: "email"
+                icon_left: "email"
+                icon_left_color: get_color_from_hex("#00BFA5")
+            M_CardTextField:
+                hint_text: "password"
+                icon_left: "lock"
+                icon_right: "eye"
+                icon_right_color: get_color_from_hex("#00BFA5")
+                icon_left_color: get_color_from_hex("#00BFA5")
+        RelativeLayout:
+            IconButton:
+                radius: dp(20)
+                icon: "login"
+                text: "Login To NocenStore"
+                md_bg_color: app.theme_cls.primary_color
+                text_color: 1,1,1,1
+                icon_color: 1,1,1,1
+                size_hint_x: .8
+                font_size: dp(16)
+                pos_hint: {"center_x": .5, "center_y": .6}
+                on_release: root.manager.current = "home"
+
+        RelativeLayout:
+            size_hint_y: .3
+            MDTextButton:
+                text: "No account yet? sign up"
+                font_style: "Button"
+                pos_hint: {"center_x": .5, "center_y": .9}
+                on_release: root.manager.current = "signup"
